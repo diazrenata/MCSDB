@@ -31,10 +31,10 @@ download_mcdb <- function(){
 #'
 #' @export
 load_mcdb <- function() {
-  species <- read.csv('analysis/data/raw_data/mcdb/MCDB_species.csv', stringsAsFactors = F)
-  sites <- read.csv('analysis/data/raw_data/mcdb/MCDB_sites.csv', stringsAsFactors = F)
-  communities <- read.csv('analysis/data/raw_data/mcdb/MCDB_communities.csv', stringsAsFactors = F)
-  trapping <- read.csv('analysis/data/raw_data/mcdb/MCDB_trapping.csv', stringsAsFactors = F)
+  species <- read.csv(paste0( 'analysis/data/raw_data/mcdb/MCDB_species.csv'), stringsAsFactors = F)
+  sites <- read.csv(paste0( 'analysis/data/raw_data/mcdb/MCDB_sites.csv'), stringsAsFactors = F)
+  communities <- read.csv(paste0( 'analysis/data/raw_data/mcdb/MCDB_communities.csv'), stringsAsFactors = F)
+  trapping <- read.csv(paste0( 'analysis/data/raw_data/mcdb/MCDB_trapping.csv'), stringsAsFactors = F)
 
   mcdb <- list(species, sites, communities, trapping)
   names(mcdb) <- c('species', 'sites', 'communities', 'trapping')
