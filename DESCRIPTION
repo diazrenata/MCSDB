@@ -1,0 +1,13 @@
+Package: mcsdb
+Title: Mammal Community Size Database
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Renata",
+           family = "Diaz",
+           role = c("aut", "cre"),
+           email = "diaz.renata@ufl.edu")
+Description: Combining the Mammal Community Database, Mammal Size Database, and other size data to produce community size data for terrestrial mammal communities. 
+License: MIT + file LICENSE
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
