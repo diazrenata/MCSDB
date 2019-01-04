@@ -1,0 +1,41 @@
+Exploring the MCDB
+================
+Renata Diaz
+1/4/2019
+
+Sourcing
+========
+
+Katherine M. Thibault, Sarah R. Supp, Mikaelle Giffin, Ethan P. White, and S. K. Morgan Ernest. 2011. Species composition and abundance of mammalian communities. Ecology 92:2316.
+
+<http://esapubs.org/archive/ecol/E092/201/>
+
+Quoting from the abstract:
+
+> Here, we provide a data set that includes species lists for 1000 mammal communities, excluding bats, with species-level abundances available for 940 of these communities. All communities found in the literature that included complete, site-specific sampling data, composed of species lists with or without associated abundances, were included in the data set. Most, but not all, sites are limited to species groups that are sampled using a single technique (e.g., small mammals sampled with Sherman traps). The data set consists of 7977 records from 1000 georeferenced sites encompassing a variety of habitats throughout the world, and it includes data on 660 mammal species with sizes ranging from 2 g to &gt;500 kg.
+
+Description of data tables
+==========================
+
+Metadata/detailed descriptions here: <http://esapubs.org/archive/ecol/E092/201/metadata.htm>
+
+`communities` is the main data table. Communities are uniquely identified via `Site_ID` and `Initial_year`, as some sites have multiple years of data. Some of the species-abundance records also include the `Mass`, which is the *average mass of the individuals of a given species captured at the particular site*. This will be useful for simulating error, but I will still need to find intraspecific size data to model the shape & variance of the intraspecific size distribution.
+
+`sites` contains information about each site. The `Site_ID` connects to `communities`. There's a `Reference_ID`. Importantly for my purposes, there's `Abundance_data_present` (none/some/all) and `Abundance_data_format` (none, raw, density estimate, or relative abundance). I will try to find size data for everything except where no abundance data is available. But to test EER and further explore abundance currencies, I will want to treat at least the relative abundance data differently from raw/density estimates.
+
+The `species` table links the `Species_ID`s to the full epithets and notes whether each taxon has been identified to species-level.
+
+The `trapping` table contains details of timing & type of trapping.
+
+Summaries of records
+====================
+
+Quoting the abstract again:
+
+> The data set consists of 7977 records from 1000 georeferenced sites encompassing a variety of habitats throughout the world, and it includes data on 660 mammal species with sizes ranging from 2 g to &gt;500 kg.
+
+-   How many species-site records have a site-specific average mass?
+-   Of species-site that don't have site-specific average mass, does that species have a mass elsewhere in the database? (Won't necessarily use it, but good to know)
+-   Of species, but especially those species without any mass records, how many have masses in \[Mammal Size Database\]? Cross-matching these databases might take some time - TBD.
+
+Once I have the size database in as well, I wonder if I can track the references down for variance. The handbook I got from the library doesn't have variance.
