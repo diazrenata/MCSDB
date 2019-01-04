@@ -1,3 +1,10 @@
+#' Download the Mammal Community Database
+#'
+#' Saves data tables from http://esapubs.org/archive/ecol/E092/201/ to `analysis/data/raw_data`.
+#'
+#' @return null
+#'
+#' @export
 download_mcdb <- function(){
   ifelse(!dir.exists(file.path('analysis/data/raw_data', 'mcdb')), dir.create(file.path('analysis/data/raw_data', 'mcdb')), FALSE)
 
@@ -15,6 +22,14 @@ download_mcdb <- function(){
                 'analysis/data/raw_data/mcdb/metadata.htm')
 }
 
+
+#' Load the MCDB
+#'
+#' Loads data tables from http://esapubs.org/archive/ecol/E092/201/ saved in `analysis/data/raw_data`.
+#'
+#' @return list of 4 data tables: `species`, `sites`, `communities`, and `trapping`
+#'
+#' @export
 load_mcdb <- function() {
   species <- read.csv('analysis/data/raw_data/mcdb/MCDB_species.csv', stringsAsFactors = F)
   sites <- read.csv('analysis/data/raw_data/mcdb/MCDB_sites.csv', stringsAsFactors = F)
