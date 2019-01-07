@@ -2,5 +2,7 @@
 
 export("%>%")
 export(download_mcdb)
+export(download_quaternarymammals)
 export(load_mcdb)
+export(load_quaternarymammals)
 importFrom(magrittr,"%>%")
