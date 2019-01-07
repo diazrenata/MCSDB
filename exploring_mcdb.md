@@ -93,7 +93,62 @@ Quoting the abstract again:
 > The data set consists of 7977 records from 1000 georeferenced sites encompassing a variety of habitats throughout the world, and it includes data on 660 mammal species with sizes ranging from 2 g to &gt;500 kg.
 
 -   How many species-site records have a site-specific average mass?
+
+``` r
+communities <- mcdb$communities %>%
+  dplyr::mutate(Mass = as.numeric(Mass))
+```
+
+    ## Warning in evalq(as.numeric(Mass), <environment>): NAs introduced by
+    ## coercion
+
+``` r
+# How many mass values?
+length(which(!is.na(communities$Mass)))
+```
+
+    ## [1] 765
+
+``` r
+# 765
+
+# How many unique species? 
+
+species_with_masses <- communities %>%
+  dplyr::filter(!is.na(Mass)) %>%
+  dplyr::select(Species_ID) %>%
+  dplyr::distinct() %>%
+  dplyr::mutate(record_exists = 1)
+
+nrow(species_with_masses)
+```
+
+    ## [1] 189
+
+``` r
+# 189
+```
+
 -   Of species-site that don't have site-specific average mass, does that species have a mass elsewhere in the database? (Won't necessarily use it, but good to know)
+
+``` r
+species_no_masses <- communities %>%
+  dplyr::filter(is.na(Mass)) %>%
+  dplyr::select(Species_ID) %>%
+  dplyr::left_join(species_with_masses, by = 'Species_ID') %>%
+  dplyr::filter(record_exists == 1)
+
+nrow(species_no_masses)
+```
+
+    ## [1] 3194
+
+``` r
+# 3194
+```
+
 -   Of species, but especially those species without any mass records, how many have masses in \[Mammal Size Database\]? Cross-matching these databases might take some time - TBD.
 
 Once I have the size database in as well, I wonder if I can track the references down for variance. The handbook I got from the library doesn't have variance.
+
+If a species doesn't have an average mass in either database, does that mean it isn't in the references of those databases?
