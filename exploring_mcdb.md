@@ -99,8 +99,7 @@ communities <- mcdb$communities %>%
   dplyr::mutate(Mass = as.numeric(Mass))
 ```
 
-    ## Warning in evalq(as.numeric(Mass), <environment>): NAs introduced by
-    ## coercion
+    ## Warning: NAs introduced by coercion
 
 ``` r
 # How many mass values?
@@ -135,16 +134,59 @@ nrow(species_with_masses)
 species_no_masses <- communities %>%
   dplyr::filter(is.na(Mass)) %>%
   dplyr::select(Species_ID) %>%
-  dplyr::left_join(species_with_masses, by = 'Species_ID') %>%
-  dplyr::filter(record_exists == 1)
+  dplyr::left_join(species_with_masses, by = 'Species_ID') 
 
+# No masses overall:
 nrow(species_no_masses)
+```
+
+    ## [1] 7212
+
+``` r
+# 7212 records in total
+length(unique(species_no_masses$Species_ID))
+```
+
+    ## [1] 655
+
+``` r
+# 655 unique species with no mass
+  
+# No masses anywhere in the database:
+no_masses <- dplyr::filter(species_no_masses, 
+                    is.na(record_exists))
+nrow(no_masses)
+```
+
+    ## [1] 4018
+
+``` r
+# 4018 records
+length(unique(no_masses$Species_ID))
+```
+
+    ## [1] 511
+
+``` r
+# 511 species with no mass
+
+# No mass at a specific site, but a mass somewhere in the db:
+a_mass <- dplyr::filter(species_no_masses, 
+                    record_exists == 1)
+nrow(a_mass)
 ```
 
     ## [1] 3194
 
 ``` r
-# 3194
+# 3194 records
+length(unique(a_mass$Species_ID))
+```
+
+    ## [1] 144
+
+``` r
+# 144 species WITH masses somewhere in the database
 ```
 
 -   Of species, but especially those species without any mass records, how many have masses in \[Mammal Size Database\]? Cross-matching these databases might take some time - TBD.
