@@ -203,3 +203,42 @@ length(unique(a_mass$species_id))
 Once I have the size database in as well, I wonder if I can track the references down for variance. The handbook I got from the library doesn't have variance.
 
 If a species doesn't have an average mass in either database, does that mean it isn't in the references of those databases?
+
+### Looking at mammal masses / MCDB overlap
+
+Note that the quaternary mammals dataset is continent-level *averages*. Might be more useful as a source of refs?
+
+``` r
+qmammals <- import_retriever_data("mammal-masses")
+
+qmammal_species <- qmammals$mammal_masses_MammalMasses %>%
+  dplyr::select(genus, species) %>%
+  dplyr::mutate(present_in_qmammals = 1) %>%
+  dplyr::mutate(genus = as.character(genus),
+                species = as.character(species))
+
+mcdb_species <- mcdb$mammal_community_db_species %>%
+  dplyr::select(genus, species) %>%
+  dplyr::mutate(genus = as.character(genus),
+                species = as.character(species))
+
+species_overlap <- mcdb_species %>%
+  dplyr::left_join(qmammal_species, by = c('genus', 'species')) %>%
+  dplyr::filter(!is.na(present_in_qmammals))
+nrow(species_overlap)
+```
+
+    ## [1] 682
+
+``` r
+# note that some of these are duplicate - multiple matches
+
+species_notfound <- mcdb_species %>%
+  dplyr::left_join(qmammal_species, by = c('genus', 'species')) %>%
+  dplyr::filter(is.na(present_in_qmammals))
+nrow(species_notfound)
+```
+
+    ## [1] 113
+
+There are 113 species not found in the quaternary mammals database. Many of these look like they might be spelling/typing stuff.
