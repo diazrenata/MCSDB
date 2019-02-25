@@ -23,11 +23,11 @@ Quoting from the abstract:
 Download and load data:
 
 ```{r download MCDB, eval = F}
-download_mcdb()
+install_retriever_data("mammal-community-db")
 ```
 
 ```{r load MCDB}
-mcdb <- load_mcdb()
+mcdb <- import_retriever_data("mammal-community-db")
 str(mcdb)
 ```
 
@@ -54,18 +54,18 @@ Quoting the abstract again:
 
 ```{r site specific masses}
 
-communities <- mcdb$communities %>%
-  dplyr::mutate(Mass = as.numeric(Mass))
+communities <- mcdb$mammal_community_db_communities %>%
+  dplyr::mutate(mass = as.numeric(mass))
 
 # How many mass values?
-length(which(!is.na(communities$Mass)))
+length(which(!is.na(communities$mass)))
 # 765
 
 # How many unique species? 
 
 species_with_masses <- communities %>%
-  dplyr::filter(!is.na(Mass)) %>%
-  dplyr::select(Species_ID) %>%
+  dplyr::filter(!is.na(mass)) %>%
+  dplyr::select(species_id) %>%
   dplyr::distinct() %>%
   dplyr::mutate(record_exists = 1)
 
@@ -81,14 +81,14 @@ nrow(species_with_masses)
 ```{r non site specific masses}
 
 species_no_masses <- communities %>%
-  dplyr::filter(is.na(Mass)) %>%
-  dplyr::select(Species_ID) %>%
-  dplyr::left_join(species_with_masses, by = 'Species_ID') 
+  dplyr::filter(is.na(mass)) %>%
+  dplyr::select(species_id) %>%
+  dplyr::left_join(species_with_masses, by = 'species_id') 
 
 # No masses overall:
 nrow(species_no_masses)
 # 7212 records in total
-length(unique(species_no_masses$Species_ID))
+length(unique(species_no_masses$species_id))
 # 655 unique species with no mass
   
 # No masses anywhere in the database:
@@ -97,7 +97,7 @@ no_masses <- dplyr::filter(species_no_masses,
 nrow(no_masses)
 
 # 4018 records
-length(unique(no_masses$Species_ID))
+length(unique(no_masses$species_id))
 # 511 species with no mass
 
 # No mass at a specific site, but a mass somewhere in the db:
@@ -105,7 +105,7 @@ a_mass <- dplyr::filter(species_no_masses,
                     record_exists == 1)
 nrow(a_mass)
 # 3194 records
-length(unique(a_mass$Species_ID))
+length(unique(a_mass$species_id))
 # 144 species WITH masses somewhere in the database
 
 
